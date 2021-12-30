@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import mainImg from "../image/coinbg.jpg";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 const MainWrapper = styled.div`
     font-weight: 600;
@@ -27,11 +28,21 @@ const HomeImg = styled.img`
     width: 100%;
     height: 100%;
     object-fit: cover;
+
+    position: fixed;
 `;
 
 HomeImg.defaultProps = {
     src: mainImg,
 };
+
+const BackgroundCover = styled.div`
+    width: 100%;
+    height: 100%;
+    position: fixed;
+
+    background-color: ${(props) => props.theme.sideOpacityColor};
+`;
 
 const ImgDesWrapper = styled.div`
     width: 100%;
@@ -41,8 +52,6 @@ const ImgDesWrapper = styled.div`
     left: 0;
 
     padding: 10px;
-
-    background-color: ${(props) => props.theme.sideOpacityColor};
 
     display: flex;
 
@@ -68,6 +77,8 @@ const typingAnimation = keyframes`
 const HomeImageTitle = styled.h1`
     font-size: 100px;
     font-weight: 700;
+
+    white-space: pre;
 
     position: relative;
 
@@ -127,7 +138,7 @@ function Home() {
             setCount(Count + 1);
         }, 200);
 
-        if(Count == txt.length) {
+        if(Count === txt.length) {
             clearInterval(interval);
         }
 
@@ -135,19 +146,25 @@ function Home() {
     })
 
     return (
-        <MainWrapper>
-            <HomeBgWrapper>
-                <HomeImg />
-                <ImgDesWrapper>
-                    <HomeImageTitle>
-                        C{Text}
-                    </HomeImageTitle>
-                    <HomeAPI>
-                        https://api.coinpaprika.com
-                    </HomeAPI>
-                </ImgDesWrapper>
-            </HomeBgWrapper>
-        </MainWrapper>
+        <HelmetProvider>
+            <Helmet>
+                <title>CRYPTO TRACKER</title>
+            </Helmet>
+            <MainWrapper>
+                <HomeBgWrapper>
+                    <HomeImg />
+                    <BackgroundCover />
+                    <ImgDesWrapper>
+                        <HomeImageTitle>
+                            C{Text}
+                        </HomeImageTitle>
+                        <HomeAPI>
+                            https://api.coinpaprika.com
+                        </HomeAPI>
+                    </ImgDesWrapper>
+                </HomeBgWrapper>
+            </MainWrapper>
+        </HelmetProvider>
     )
 }
 

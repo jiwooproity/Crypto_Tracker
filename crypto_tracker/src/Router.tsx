@@ -27,8 +27,8 @@ function Router() {
                     <Navbar />
                     <Coins />
                     <Routes>
-                        <Route path={`/:coinId`} element={<Coin />} />
-                        <Route path={`/`} element={<Home />} />
+                        <Route path='/:coinId' element={<Coin />} />
+                        <Route path='/' element={<Home />} />
                     </Routes>
                 </InnerContainer>
             </WebWrapper>
