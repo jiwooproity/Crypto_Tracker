@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { fetchCoinInfo, fetchPrice, fetchPriceHistory } from "../config/api";
 import mainImg from "../image/coinbg.jpg";
 import { Helmet, HelmetProvider } from "react-helmet-async";
+import ChartList from "./ChartList";
 
 const MainWrapper = styled.div`
     font-weight: 600;
@@ -256,7 +257,7 @@ const CoinDetailTitle = styled.div`
 const CoinPriceName = styled.span`
     font-size: 11px;
 
-    padding: 0px 0px 8px 0px;
+    padding: 0px 0px 6px 0px;
 
     width: 100%;
     display: block;
@@ -270,7 +271,7 @@ const PriceStatus = styled.h1`
     font-size: 35px;
     font-weight: 700;
 
-    padding: 0px 0px 8px 0px;
+    padding: 0px 0px 6px 0px;
 
     width: 100%;
     display: block;
@@ -293,6 +294,10 @@ const PriceDetailohlv = styled.div`
     padding: 8px 0px 8px 0px;
 
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+    &:last-child {
+        border: none;
+    }
 
     span {
         font-size: 11px;
@@ -456,7 +461,7 @@ function Coin() {
                                     </PriceDetailGrid>
                                 </CoinInfoBox>
                                 <CoinInfoBox>
-                                    <h1>Graph</h1>
+                                    <ChartList coinId={coinId}></ChartList>
                                 </CoinInfoBox>
                             </CoinDetailGrid>
                         )}
