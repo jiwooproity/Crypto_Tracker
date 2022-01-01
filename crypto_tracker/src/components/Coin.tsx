@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 import { useParams } from "react-router";
 import styled from "styled-components";
-import { fetchCoinInfo } from "../config/api";
+import { fetchCoinInfo, fetchPrice, fetchPriceHistory } from "../config/api";
 import mainImg from "../image/coinbg.jpg";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 
@@ -13,7 +13,7 @@ const MainWrapper = styled.div`
 
     position: relative;
 
-    z-index: -1;
+    z-index: 1;
 
     display: flex;
     justify-content: center;
@@ -97,7 +97,7 @@ const LoadingPage = styled.div`
 
 const CoinInfoBox = styled.div`
     width: 100%;
-    height: 250px;
+    height: 260px;
 
     position: relative;
 
@@ -186,6 +186,42 @@ const CoinTypeBox = styled.span`
     color: ${(props) => props.theme.mainTextColor};
 `;
 
+const OpenSourceLink = styled.span`
+    margin-right: 8px;
+
+    font-size: 10px;
+
+    display: block;
+
+    border-radius: 5px;
+
+    background-color: rgba(232, 232, 232, 1);
+    color: ${(props) => props.theme.mainTextColor};
+
+    a {
+        font-size: 10px;
+
+        padding: 5px;
+
+        display: block;
+
+        text-decoration: none;
+
+        border-radius: 5px;
+
+        color: ${(props) => props.theme.mainTextColor};
+
+        &:hover {
+            background-color: rgba(100, 100, 100, 1);
+            color: ${(props) => props.theme.sideTextColor};
+        }
+
+        i {
+            font-size: 10px;
+        }
+    }
+`;
+
 const CoinTagsBox = styled.div`
     width: 100%;
     
@@ -214,6 +250,56 @@ const CoinDetailTitle = styled.div`
 
     @media only screen and (max-width: 768px) {
         font-size: 40px;
+    }
+`;
+
+const CoinPriceName = styled.span`
+    font-size: 11px;
+
+    padding: 0px 0px 8px 0px;
+
+    width: 100%;
+    display: block;
+
+    white-space: pre;
+
+    text-align: left;
+`;
+
+const PriceStatus = styled.h1`
+    font-size: 35px;
+    font-weight: 700;
+
+    padding: 0px 0px 8px 0px;
+
+    width: 100%;
+    display: block;
+
+    white-space: pre;
+
+    text-align: left;
+
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+`;
+
+const PriceDetailGrid = styled.div`
+    width: 100%;
+
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+`;
+
+const PriceDetailohlv = styled.div`
+    padding: 8px 0px 8px 0px;
+
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+    span {
+        font-size: 11px;
+    }
+
+    p {
+        padding: 8px 0px 0px 0px;
     }
 `;
 
@@ -258,26 +344,66 @@ interface IInfoData {
     ]
 }
 
+interface IPriceData {
+    id: string;
+    name : string;
+    symbol: string;
+    rank : number;
+    circulating_supply: number;
+    total_supply : number;
+    max_supply: number;
+    beta_value : number;
+    first_data_at: string;
+    last_updated : string;
+    quotes: {
+        USD: {
+            ath_date: string;
+            ath_price: number;
+            market_cap: number;
+            market_cap_change_24h: number;
+            percent_change_1h: number;
+            percent_change_1y: number;
+            percent_change_6h: number;
+            percent_change_7d: number;
+            percent_change_12h: number;
+            percent_change_15m: number;
+            percent_change_24h: number;
+            percent_change_30d: number;
+            percent_change_30m: number;
+            percent_from_price_ath: number;
+            price: number;
+            volume_24h: number;
+            volume_24h_change_24h: number;
+        }
+    };
+}
+
 function Coin() {
     const { coinId } = useParams() as unknown as RouteParams;
 
-    const { isLoading, data } = useQuery<IInfoData>(["info", coinId], () => fetchCoinInfo(coinId));
+    const { isLoading: dataLoading, data: infoData } = useQuery<IInfoData>(["info", coinId], () => fetchCoinInfo(coinId));
+    const { isLoading: priceLoading, data: priceData } = useQuery<IPriceData>(["price", coinId], () => fetchPrice(coinId),
+    {
+        refetchInterval: 5000,
+    });
     
-    const coinDate = data?.first_data_at.slice(0, 10);
+    const coinDate = infoData?.first_data_at.slice(0, 10);
+
+    const loading = dataLoading || priceLoading;
 
     return (
         <HelmetProvider>
             <MainWrapper>
                 <Helmet>
-                    <title>{data?.id.toUpperCase()}</title>
-                    <link rel="icon" href={`https://cryptoicon-api.vercel.app/api/icon/${data?.symbol.toLowerCase()}`} />
+                    <title>{infoData?.id.toUpperCase()}</title>
+                    <link rel="icon" href={`https://cryptoicon-api.vercel.app/api/icon/${infoData?.symbol.toLowerCase()}`} />
                 </Helmet>
                 <HomeBgWrapper>
                     <HomeImg />
                     <BackgroundCover />
                     <CoinDetailTitle>CRYPTO TRACKER</CoinDetailTitle>
                     <ImgDesWrapper>
-                        {isLoading ? (
+                        {loading ? (
                             <LoadingPage>
                                 <i className="fas fa-spinner fa-pulse"></i>
                                 <span>Loading ...</span>
@@ -286,24 +412,48 @@ function Coin() {
                             <CoinDetailGrid>
                                 <CoinInfoBox>
                                     <CoinSymbolBox>
-                                        <CoinSymbol src={`https://cryptoicon-api.vercel.app/api/icon/${data?.symbol.toLowerCase()}`}/>
-                                        <h1>{data?.name}</h1>
-                                        <span>{data?.symbol}</span>
+                                        <CoinSymbol src={`https://cryptoicon-api.vercel.app/api/icon/${infoData?.symbol.toLowerCase()}`}/>
+                                        <h1>{infoData?.name}</h1>
+                                        <span>{infoData?.symbol}</span>
                                     </CoinSymbolBox>
                                     <CoinRankBox>
-                                        <CoinTypeBoxAccent>Rank #{data?.rank}</CoinTypeBoxAccent>
-                                        <CoinTypeBox>{data?.type.slice(0, 1).toUpperCase()}{data?.type.slice(1)}</CoinTypeBox>
+                                        <CoinTypeBoxAccent>Rank #{infoData?.rank}</CoinTypeBoxAccent>
+                                        <CoinTypeBox>{infoData?.type.slice(0, 1).toUpperCase()}{infoData?.type.slice(1)}</CoinTypeBox>
                                         <CoinTypeBox>{coinDate}</CoinTypeBox>
+                                        {infoData?.open_source ? (
+                                            <OpenSourceLink>
+                                                <a href={infoData?.links.source_code} target="_blank" rel="noreferrer">
+                                                    <i className="fas fa-code" /> Source Code <i className="fas fa-external-link-alt" />
+                                                </a>
+                                            </OpenSourceLink>
+                                        ) : (
+                                            null
+                                        )}
                                     </CoinRankBox>
                                     <TagsSpan>Tags: </TagsSpan>
                                     <CoinTagsBox>
-                                        {data?.tags?.map((item) => (
-                                            <CoinTypeBox key={item.id}>#{item.name}</CoinTypeBox>
+                                        {infoData?.tags?.map((item) => (
+                                                <CoinTypeBox key={item.id}>#{item.name}</CoinTypeBox>
                                         ))}
                                     </CoinTagsBox>
                                 </CoinInfoBox>
                                 <CoinInfoBox>
-                                    <h1>Price</h1>
+                                    <CoinPriceName>{infoData?.name} Price ({infoData?.symbol})</CoinPriceName>
+                                    <PriceStatus>${priceData?.quotes.USD.price.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</PriceStatus>
+                                    <PriceDetailGrid>
+                                        <PriceDetailohlv>
+                                            <span>Market Cap: </span>
+                                            <p>${priceData?.quotes.USD.market_cap.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</p>
+                                        </PriceDetailohlv>
+                                        <PriceDetailohlv>
+                                            <span>All Time High: </span>
+                                            <p>${priceData?.quotes.USD.ath_price.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</p>
+                                        </PriceDetailohlv>
+                                        <PriceDetailohlv>
+                                            <span>All Time Date: </span>
+                                            <p>{priceData?.quotes.USD.ath_date.slice(0, 10)}</p>
+                                        </PriceDetailohlv>
+                                    </PriceDetailGrid>
                                 </CoinInfoBox>
                                 <CoinInfoBox>
                                     <h1>Graph</h1>
