@@ -112,6 +112,19 @@ const CoinInfoBox = styled.div`
     background-color: ${(props) => props.theme.mainBgColor};
 `;
 
+const GraphBox = styled.div`
+    width: 100%;
+
+    position: relative;
+    
+    border-radius: 15px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.8);
+
+    color: ${(props) => props.theme.mainTextColor};
+
+    background-color: ${(props) => props.theme.mainBgColor};
+`;
+
 const TagsSpan = styled.span`
     font-size: 10px;
     margin-top: 10px;
@@ -460,9 +473,9 @@ function Coin() {
                                         </PriceDetailohlv>
                                     </PriceDetailGrid>
                                 </CoinInfoBox>
-                                <CoinInfoBox>
+                                <GraphBox>
                                     <ChartList coinId={coinId}></ChartList>
-                                </CoinInfoBox>
+                                </GraphBox>
                             </CoinDetailGrid>
                         )}
                     </ImgDesWrapper>

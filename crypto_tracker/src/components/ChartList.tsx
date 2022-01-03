@@ -27,7 +27,10 @@ const PropH1 = styled.h1`
 `;
 
 function ChartList({coinId}: chartProps) {
-    const { isLoading, data } = useQuery<IChartProps[]>(["ohlcvData", coinId], () => fetchPriceHistory(coinId));
+    const { isLoading, data } = useQuery<IChartProps[]>(["ohlcvData", coinId], () => fetchPriceHistory(coinId),
+    {
+        refetchInterval: 5000,
+    });
     
     return (
         <>
@@ -55,7 +58,6 @@ function ChartList({coinId}: chartProps) {
                         },
     
                         chart: {
-                            width: "100%",
                             toolbar: {
                                 show: false,
                             },
