@@ -125,6 +125,14 @@ const GraphBox = styled.div`
     background-color: ${(props) => props.theme.mainBgColor};
 `;
 
+const GraphBoxText = styled.div`
+    font-size: 12px;
+    
+    position: absolute;
+    top: 20px;
+    left: 20px;
+`;
+
 const TagsSpan = styled.span`
     font-size: 10px;
     margin-top: 10px;
@@ -474,6 +482,7 @@ function Coin() {
                                     </PriceDetailGrid>
                                 </CoinInfoBox>
                                 <GraphBox>
+                                    <GraphBoxText>{infoData?.name} Chart</GraphBoxText>
                                     <ChartList coinId={coinId}></ChartList>
                                 </GraphBox>
                             </CoinDetailGrid>
