@@ -12,4 +12,7 @@ export const lightTheme: DefaultTheme = {
     sideOpacityColor: "rgba(41, 48, 71, 0.7)", 
 
     toggleColor: "#455075",
+
+    upColor: "#16c784",
+    downColor: "#ea3943",
 }

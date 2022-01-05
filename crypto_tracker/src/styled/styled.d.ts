@@ -14,5 +14,8 @@ declare module 'styled-components' {
         sideOpacityColor: string,
 
         toggleColor: string;
+
+        upColor: string;
+        downColor: string;
     }
 }

@@ -123,6 +123,8 @@ const GraphBox = styled.div`
     color: ${(props) => props.theme.mainTextColor};
 
     background-color: ${(props) => props.theme.mainBgColor};
+
+    transition: width 0.5s ease;
 `;
 
 const GraphBoxText = styled.div`
@@ -292,16 +294,7 @@ const PriceStatus = styled.h1`
     font-size: 35px;
     font-weight: 700;
 
-    padding: 0px 0px 6px 0px;
-
-    width: 100%;
-    display: block;
-
-    white-space: pre;
-
-    text-align: left;
-
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    transition: color 1s ease;
 `;
 
 const PriceDetailGrid = styled.div`
@@ -328,6 +321,55 @@ const PriceDetailohlv = styled.div`
         padding: 8px 0px 0px 0px;
     }
 `;
+
+const PriceWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    padding: 0px 0px 6px 0px;
+
+    width: 100%;
+
+    white-space: pre;
+
+    text-align: left;
+
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+`;
+
+const MainPriceFlex = styled.div<PriceStatus>`
+    display: flex;
+    align-items: center;
+
+    color: ${(props) => props.isPriceUp ? props.theme.upColor : props.theme.downColor};
+`;
+
+const PricePercentFlex = styled.div<PriceStatus>`
+    display: flex;
+    align-items: center;
+
+    padding: 5px 7px;
+
+    background-color: ${(props) => props.isPriceUp ? props.theme.upColor : props.theme.downColor};
+    color: ${(props) => props.theme.sideTextColor};
+
+    border-radius: 5px;
+
+    transition: color 1s ease;
+`;
+
+const PricePercent = styled.div<PriceStatus>`
+    font-size: 20px;
+`
+
+const ArrowStatus = styled.span<PriceStatus>`
+    font-size: 12px;
+`;
+
+interface PriceStatus {
+    isPriceUp: boolean;
+}
 
 interface RouteParams {
     coinId: string;
@@ -415,6 +457,8 @@ function Coin() {
     
     const coinDate = infoData?.first_data_at.slice(0, 10);
 
+    const isPriceUp = priceData?.quotes.USD.percent_change_24h ? priceData?.quotes.USD.percent_change_24h > 0 : false;
+
     const loading = dataLoading || priceLoading;
 
     return (
@@ -464,8 +508,21 @@ function Coin() {
                                     </CoinTagsBox>
                                 </CoinInfoBox>
                                 <CoinInfoBox>
-                                    <CoinPriceName>{infoData?.name} Price ({infoData?.symbol})</CoinPriceName>
-                                    <PriceStatus>${priceData?.quotes.USD.price.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</PriceStatus>
+                                    <CoinPriceName>{infoData?.name} Price ({infoData?.symbol}) - Last Updated: {priceData?.last_updated.slice(0, 10)}</CoinPriceName>
+                                    <PriceWrapper>
+                                        <MainPriceFlex isPriceUp={isPriceUp}>
+                                            <ArrowStatus isPriceUp={isPriceUp}>{isPriceUp ? "▲ " : "▼ "}</ArrowStatus>
+                                            <PriceStatus>
+                                            ${priceData?.quotes.USD.price.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{" "}
+                                            </PriceStatus>
+                                        </MainPriceFlex>
+                                        <PricePercentFlex isPriceUp={isPriceUp}>
+                                            <ArrowStatus isPriceUp={isPriceUp}>{isPriceUp ? "▲ " : "▼ "}</ArrowStatus>
+                                            <PricePercent isPriceUp={isPriceUp}>   
+                                                {priceData!.quotes.USD.percent_change_24h.toFixed(1).toString().slice(1, 4)}%
+                                            </PricePercent>
+                                        </PricePercentFlex>
+                                    </PriceWrapper>
                                     <PriceDetailGrid>
                                         <PriceDetailohlv>
                                             <span>Market Cap: </span>
