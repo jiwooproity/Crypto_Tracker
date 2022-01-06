@@ -1,6 +1,6 @@
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import Router from "./Router";
-import { lightTheme } from "./styled/theme";
+import { theme } from "./styled/theme";
 
 const GlobalStyle = createGlobalStyle`
   html, body, div, span, applet, object, iframe,
@@ -66,7 +66,7 @@ const GlobalStyle = createGlobalStyle`
 function App() {
   return (
     <>
-      <ThemeProvider theme={lightTheme}>
+      <ThemeProvider theme={theme}>
         <GlobalStyle />
         <Router />
       </ThemeProvider>

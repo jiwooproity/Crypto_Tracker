@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 import { useParams } from "react-router";
 import styled from "styled-components";
-import { fetchCoinInfo, fetchPrice, fetchPriceHistory } from "../config/api";
+import { fetchCoinInfo, fetchPrice } from "../config/api";
 import mainImg from "../image/coinbg.jpg";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import ChartList from "./ChartList";
@@ -127,14 +127,6 @@ const GraphBox = styled.div`
     transition: width 0.5s ease;
 `;
 
-const GraphBoxText = styled.div`
-    font-size: 12px;
-    
-    position: absolute;
-    top: 20px;
-    left: 20px;
-`;
-
 const TagsSpan = styled.span`
     font-size: 10px;
     margin-top: 10px;
@@ -156,6 +148,13 @@ const CoinSymbolBox = styled.div`
 
     h1 {
         font-size: 30px;
+        cursor: pointer;
+        
+        transition: color 0.5s ease;
+
+        &:hover {
+            color: black;
+        }
     }
 
     span {
@@ -273,6 +272,7 @@ const CoinDetailTitle = styled.div`
     transform: translateX(-50%);
 
     @media only screen and (max-width: 768px) {
+        top: 100px;
         font-size: 40px;
     }
 `;
@@ -293,8 +293,6 @@ const CoinPriceName = styled.span`
 const PriceStatus = styled.h1`
     font-size: 35px;
     font-weight: 700;
-
-    transition: color 1s ease;
 `;
 
 const PriceDetailGrid = styled.div`
@@ -338,14 +336,19 @@ const PriceWrapper = styled.div`
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 `;
 
-const MainPriceFlex = styled.div<PriceStatus>`
+interface PercentProps {
+    isPriceUp: boolean;
+}
+
+const MainPriceFlex = styled.div<PercentProps>`
     display: flex;
     align-items: center;
 
     color: ${(props) => props.isPriceUp ? props.theme.upColor : props.theme.downColor};
+    transition: color 1s ease;
 `;
 
-const PricePercentFlex = styled.div<PriceStatus>`
+const PricePercentFlex = styled.div<PercentProps>`
     display: flex;
     align-items: center;
 
@@ -356,20 +359,16 @@ const PricePercentFlex = styled.div<PriceStatus>`
 
     border-radius: 5px;
 
-    transition: color 1s ease;
+    transition: background-color 1s ease;
 `;
 
-const PricePercent = styled.div<PriceStatus>`
+const PricePercent = styled.div`
     font-size: 20px;
 `
 
-const ArrowStatus = styled.span<PriceStatus>`
+const ArrowStatus = styled.span`
     font-size: 12px;
 `;
-
-interface PriceStatus {
-    isPriceUp: boolean;
-}
 
 interface RouteParams {
     coinId: string;
@@ -483,7 +482,7 @@ function Coin() {
                                 <CoinInfoBox>
                                     <CoinSymbolBox>
                                         <CoinSymbol src={`https://cryptoicon-api.vercel.app/api/icon/${infoData?.symbol.toLowerCase()}`}/>
-                                        <h1>{infoData?.name}</h1>
+                                        <h1 title={infoData?.description! === "" ? "등록된 설명이 없습니다." : infoData?.description}>{infoData?.name}</h1>
                                         <span>{infoData?.symbol}</span>
                                     </CoinSymbolBox>
                                     <CoinRankBox>
@@ -500,26 +499,30 @@ function Coin() {
                                             null
                                         )}
                                     </CoinRankBox>
-                                    <TagsSpan>Tags: </TagsSpan>
+                                    <TagsSpan>Tags:</TagsSpan>
                                     <CoinTagsBox>
-                                        {infoData?.tags?.map((item) => (
+                                        {infoData?.tags! == null ? (
+                                            <CoinTypeBox>등록된 태그가 없습니다.</CoinTypeBox>
+                                        ) : (
+                                            infoData?.tags!.map((item) => (
                                                 <CoinTypeBox key={item.id}>#{item.name}</CoinTypeBox>
-                                        ))}
+                                            ))
+                                        )}
                                     </CoinTagsBox>
                                 </CoinInfoBox>
                                 <CoinInfoBox>
                                     <CoinPriceName>{infoData?.name} Price ({infoData?.symbol}) - Last Updated: {priceData?.last_updated.slice(0, 10)}</CoinPriceName>
                                     <PriceWrapper>
                                         <MainPriceFlex isPriceUp={isPriceUp}>
-                                            <ArrowStatus isPriceUp={isPriceUp}>{isPriceUp ? "▲ " : "▼ "}</ArrowStatus>
+                                            <ArrowStatus>{isPriceUp ? "▲ " : "▼ "}</ArrowStatus>
                                             <PriceStatus>
                                             ${priceData?.quotes.USD.price.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{" "}
                                             </PriceStatus>
                                         </MainPriceFlex>
                                         <PricePercentFlex isPriceUp={isPriceUp}>
-                                            <ArrowStatus isPriceUp={isPriceUp}>{isPriceUp ? "▲ " : "▼ "}</ArrowStatus>
-                                            <PricePercent isPriceUp={isPriceUp}>   
-                                                {priceData!.quotes.USD.percent_change_24h.toFixed(1).toString().slice(1, 4)}%
+                                            <ArrowStatus>{isPriceUp ? "▲ " : "▼ "}</ArrowStatus>
+                                            <PricePercent>
+                                                {isPriceUp ? priceData!.quotes.USD.percent_change_24h.toFixed(1).toString() : priceData!.quotes.USD.percent_change_24h.toFixed(1).toString().replace("-", "")}%
                                             </PricePercent>
                                         </PricePercentFlex>
                                     </PriceWrapper>
@@ -539,8 +542,7 @@ function Coin() {
                                     </PriceDetailGrid>
                                 </CoinInfoBox>
                                 <GraphBox>
-                                    <GraphBoxText>{infoData?.name} Chart</GraphBoxText>
-                                    <ChartList coinId={coinId}></ChartList>
+                                    <ChartList coinId={coinId} coinName={infoData!.name}></ChartList>
                                 </GraphBox>
                             </CoinDetailGrid>
                         )}

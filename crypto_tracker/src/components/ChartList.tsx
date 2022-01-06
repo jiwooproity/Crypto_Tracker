@@ -5,6 +5,7 @@ import ApexChart from "react-apexcharts";
 
 interface chartProps {
     coinId: string;
+    coinName: string;
 }
 
 interface IChartProps {
@@ -18,15 +19,15 @@ interface IChartProps {
     volume: number;
 }
 
-const PropH1 = styled.h1`
-    font-size: 30px;
-
-    text-transform: uppercase;
-
-    margin-bottom: 10px;
+const GraphBoxText = styled.div`
+    font-size: 12px;
+    
+    position: absolute;
+    top: 20px;
+    left: 20px;
 `;
 
-function ChartList({coinId}: chartProps) {
+function ChartList({coinId, coinName}: chartProps) {
     const { isLoading, data } = useQuery<IChartProps[]>(["ohlcvData", coinId], () => fetchPriceHistory(coinId),
     {
         refetchInterval: 5000,
@@ -35,73 +36,66 @@ function ChartList({coinId}: chartProps) {
     return (
         <>
             {isLoading ? (
-                "loading..."
+                <GraphBoxText>
+                    Loading...
+                </GraphBoxText>
             ) : (
-                <ApexChart 
-                    type="candlestick"
+                <>
+                    <GraphBoxText>
+                        {coinName} Chart
+                    </GraphBoxText>
+                    <ApexChart 
+                        type="candlestick"
 
-                    series={[
-                        {
-                            name: "price",
-                            data: data?.map((price) => {
-                                return {
-                                    x: price.time_close,
-                                    y: [price.open.toFixed(2), price.high.toFixed(2), price.low.toFixed(2), price.close.toFixed(2)],
-                                }
-                            })
-                        }
-                    ]}
-
-                    options={{
-                        theme: {
-                            mode: "dark",
-                        },
-    
-                        chart: {
-                            toolbar: {
-                                show: false,
-                            },
-    
-                            background: "transparent",
-                        },
-    
-                        grid: {
-                            show: false,
-                        },
-    
-                        stroke: {
-                            curve: "smooth",
-                            width: 1,
-                        },
-    
-                        yaxis: {
-                            show: false,
-                        },
-    
-                        xaxis: {
-                            axisBorder: {
-                                show: false,
-                            },
-    
-                            axisTicks: {
-                                show: false,
-                            },
-    
-                            labels: {
-                                show: false,
-                            },
-    
-                            type: "datetime",
-                            categories: data?.map((price) => price.time_close),
-                        },
-    
-                        tooltip: {
-                            y: {
-                                formatter: (value) => `$ ${value.toFixed(3)}`,
+                        series={[
+                            {
+                                data: data?.map((price) => {
+                                    return {
+                                        x: price.time_close.slice(2, 10),
+                                        y: [price.open.toFixed(2), price.high.toFixed(2), price.low.toFixed(2), price.close.toFixed(2)],
+                                    }
+                                })
                             }
-                        }
-                    }}
-                />
+                        ]}
+
+                        options={{
+                            chart: {
+                                toolbar: {
+                                    show: false,
+                                },
+        
+                                background: "transparent",
+                            },
+        
+                            grid: {
+                                show: false,
+                            },
+        
+                            stroke: {
+                                curve: "smooth",
+                                width: 1,
+                            },
+        
+                            yaxis: {
+                                show: false,
+                            },
+        
+                            xaxis: {
+                                axisBorder: {
+                                    show: false,
+                                },
+        
+                                axisTicks: {
+                                    show: false,
+                                },
+        
+                                labels: {
+                                    show: false,
+                                },
+                            },
+                        }}
+                    />
+                </>
             )}
         </>
     )
