@@ -1,4 +1,5 @@
 
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const NavWrapper = styled.div`
@@ -41,7 +42,7 @@ function Navbar() {
         <NavWrapper>
             <NavMenu>
                 <NavMenuItem>
-                    about
+                    <Link to="/about">About</Link>
                 </NavMenuItem>
                 <NavMenuItem>
                     <a href="https://api.coinpaprika.com" target="_blank" rel="noreferrer">API</a>
