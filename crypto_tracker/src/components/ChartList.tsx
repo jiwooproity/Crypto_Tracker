@@ -4,47 +4,42 @@ import { fetchPriceHistory } from "../config/api";
 import ApexChart from "react-apexcharts";
 
 interface chartProps {
-    coinId: string;
-    coinName: string;
+  coinId: string;
+  coinName: string;
 }
 
 interface IChartProps {
-    close: number;
-    high: number;
-    low: number;
-    market_cap: number;
-    open: number;
-    time_close: string;
-    time_open: string;
-    volume: number;
+  close: number;
+  high: number;
+  low: number;
+  market_cap: number;
+  open: number;
+  time_close: string;
+  time_open: string;
+  volume: number;
 }
 
 const GraphBoxText = styled.div`
-    font-size: 12px;
-    
-    position: absolute;
-    top: 20px;
-    left: 20px;
+  font-size: 12px;
+
+  position: absolute;
+  top: 20px;
+  left: 20px;
 `;
 
-function ChartList({coinId, coinName}: chartProps) {
-    const { isLoading, data } = useQuery<IChartProps[]>(["ohlcvData", coinId], () => fetchPriceHistory(coinId),
-    {
-        refetchInterval: 5000,
-    });
-    
-    return (
+function ChartList({ coinId, coinName }: chartProps) {
+  const { isLoading, data } = useQuery<IChartProps[]>(["ohlcvData", coinId], () => fetchPriceHistory(coinId), {
+    refetchInterval: 5000,
+  });
+
+  return (
+    <>
+      {isLoading ? (
+        <GraphBoxText>Loading...</GraphBoxText>
+      ) : (
         <>
-            {isLoading ? (
-                <GraphBoxText>
-                    Loading...
-                </GraphBoxText>
-            ) : (
-                <>
-                    <GraphBoxText>
-                        {coinName} Chart
-                    </GraphBoxText>
-                    <ApexChart 
+          <GraphBoxText>{coinName} Chart</GraphBoxText>
+          {/* <ApexChart 
                         type="candlestick"
 
                         series={[
@@ -94,11 +89,11 @@ function ChartList({coinId, coinName}: chartProps) {
                                 },
                             },
                         }}
-                    />
-                </>
-            )}
+                    /> */}
         </>
-    )
+      )}
+    </>
+  );
 }
 
 export default ChartList;

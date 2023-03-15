@@ -7,550 +7,575 @@ import { Helmet, HelmetProvider } from "react-helmet-async";
 import ChartList from "./ChartList";
 
 const MainWrapper = styled.div`
-    font-weight: 600;
+  font-weight: 600;
 
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 
-    position: relative;
+  position: relative;
 
-    z-index: 1;
+  z-index: 1;
 
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 `;
 
 const HomeBgWrapper = styled.div`
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 
-    position: relative;
+  position: relative;
 `;
 
 const HomeImg = styled.img`
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 
-    position: fixed;
+  position: fixed;
 `;
 
 HomeImg.defaultProps = {
-    src: mainImg,
+  src: mainImg,
 };
 
 const BackgroundCover = styled.div`
-    width: 100%;
-    height: 100%;
-    position: fixed;
+  width: 100%;
+  height: 100%;
+  position: fixed;
 
-    background-color: ${(props) => props.theme.sideOpacityColor};
+  background-color: ${(props) => props.theme.sideOpacityColor};
 `;
 
 const ImgDesWrapper = styled.div`
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
 
-    padding: 200px 50px 80px 50px;
+  padding: 200px 50px 80px 50px;
 
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 `;
 
 const CoinDetailGrid = styled.div`
-    width: 1200px;
+  width: 1200px;
 
-    grid-gap: 20px;
+  grid-gap: 20px;
 
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
 
-    border-radius: 5px;
+  border-radius: 5px;
 `;
 
 const LoadingPage = styled.div`
-    width: 100%;
-    height: 100vh;
+  width: 100%;
+  height: 100vh;
 
-    z-index: 5;
+  z-index: 5;
 
-    position: absolute;
-    top: 0;
-    left: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-    color: ${(props) => props.theme.sideTextColor};
+  color: ${(props) => props.theme.sideTextColor};
 
-    i {
-        font-size: 100px;
-    }
+  i {
+    font-size: 100px;
+  }
 
-    span {
-        padding-top: 20px;
-    }
+  span {
+    padding-top: 20px;
+  }
 `;
 
 const CoinInfoBox = styled.div`
-    width: 100%;
-    height: 260px;
+  width: 100%;
+  height: 260px;
 
-    position: relative;
+  position: relative;
 
-    padding: 20px;
-    
-    border-radius: 15px;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.8);
+  padding: 20px;
 
-    color: ${(props) => props.theme.mainTextColor};
+  border-radius: 15px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.8);
 
-    background-color: ${(props) => props.theme.mainBgColor};
+  color: ${(props) => props.theme.mainTextColor};
+
+  background-color: ${(props) => props.theme.mainBgColor};
 `;
 
 const GraphBox = styled.div`
-    width: 100%;
+  width: 100%;
 
-    position: relative;
-    
-    border-radius: 15px;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.8);
+  position: relative;
 
-    color: ${(props) => props.theme.mainTextColor};
+  border-radius: 15px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.8);
 
-    background-color: ${(props) => props.theme.mainBgColor};
+  color: ${(props) => props.theme.mainTextColor};
 
-    transition: width 0.5s ease;
+  background-color: ${(props) => props.theme.mainBgColor};
+
+  transition: width 0.5s ease;
 `;
 
 const TagsSpan = styled.span`
-    font-size: 10px;
-    margin-top: 10px;
+  font-size: 10px;
+  margin-top: 10px;
 
-    display: block;
+  display: block;
 `;
 
 const CoinSymbol = styled.img`
-    width: 30px;
-    
-    margin-right: 5px;
+  width: 30px;
+
+  margin-right: 5px;
 `;
 
 const CoinSymbolBox = styled.div`
-    width: 100%;
-    
-    display: flex;
-    align-items: center;
+  width: 100%;
 
-    h1 {
-        font-size: 30px;
-        cursor: pointer;
-        
-        transition: color 0.5s ease;
+  display: flex;
+  align-items: center;
 
-        &:hover {
-            color: black;
-        }
+  h1 {
+    font-size: 30px;
+    cursor: pointer;
+
+    transition: color 0.5s ease;
+
+    &:hover {
+      color: black;
     }
+  }
 
-    span {
-        font-size: 12px;
+  span {
+    font-size: 12px;
 
-        display: block;
-        padding: 5px 5px;
-        margin-left: 10px;
+    display: block;
+    padding: 5px 5px;
+    margin-left: 10px;
 
-        background-color: rgba(232, 232, 232, 1);
-        color: ${(props) => props.theme.mainTextColor};
+    background-color: rgba(232, 232, 232, 1);
+    color: ${(props) => props.theme.mainTextColor};
 
-        border-radius: 5px;
-    }
+    border-radius: 5px;
+  }
 `;
 
 const CoinRankBox = styled.div`
-    width: 100%;
+  width: 100%;
 
-    display: flex;
-    align-items: center;
-    
-    margin-top: 15px;
+  display: flex;
+  align-items: center;
+
+  margin-top: 15px;
 `;
 
 const CoinTypeBoxAccent = styled.span`
-    margin-right: 8px;
+  margin-right: 8px;
 
-    font-size: 10px;
-    padding: 5px;
+  font-size: 10px;
+  padding: 5px;
 
-    display: block;
+  display: block;
 
-    border-radius: 5px;
+  border-radius: 5px;
 
-    background-color: rgba(100, 100, 100, 1);
-    color: ${(props) => props.theme.sideTextColor};
+  background-color: rgba(100, 100, 100, 1);
+  color: ${(props) => props.theme.sideTextColor};
 `;
 
 const CoinTypeBox = styled.span`
-    margin-right: 8px;
+  margin-right: 8px;
 
-    font-size: 10px;
+  font-size: 10px;
 
-    display: block;
+  display: block;
 
-    padding: 5px;
+  padding: 5px;
 
-    border-radius: 5px;
+  border-radius: 5px;
 
-    background-color: rgba(232, 232, 232, 1);
-    color: ${(props) => props.theme.mainTextColor};
+  background-color: rgba(232, 232, 232, 1);
+  color: ${(props) => props.theme.mainTextColor};
 `;
 
 const OpenSourceLink = styled.span`
-    margin-right: 8px;
+  margin-right: 8px;
 
+  font-size: 10px;
+
+  display: block;
+
+  border-radius: 5px;
+
+  background-color: rgba(232, 232, 232, 1);
+  color: ${(props) => props.theme.mainTextColor};
+
+  a {
     font-size: 10px;
+
+    padding: 5px;
 
     display: block;
 
+    text-decoration: none;
+
     border-radius: 5px;
 
-    background-color: rgba(232, 232, 232, 1);
     color: ${(props) => props.theme.mainTextColor};
 
-    a {
-        font-size: 10px;
-
-        padding: 5px;
-
-        display: block;
-
-        text-decoration: none;
-
-        border-radius: 5px;
-
-        color: ${(props) => props.theme.mainTextColor};
-
-        &:hover {
-            background-color: rgba(100, 100, 100, 1);
-            color: ${(props) => props.theme.sideTextColor};
-        }
-
-        i {
-            font-size: 10px;
-        }
+    &:hover {
+      background-color: rgba(100, 100, 100, 1);
+      color: ${(props) => props.theme.sideTextColor};
     }
+
+    i {
+      font-size: 10px;
+    }
+  }
 `;
 
 const CoinTagsBox = styled.div`
-    width: 100%;
-    
-    margin-top: 10px;
+  width: 100%;
 
-    gap: 5px;
+  margin-top: 10px;
 
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 5px;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
 `;
 
 const CoinDetailTitle = styled.div`
-    font-size: 80px;
+  font-size: 80px;
 
-    white-space: pre;
+  white-space: pre;
 
-    text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
+  text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
 
-    color: ${(props) => props.theme.sideTextColor};
+  color: ${(props) => props.theme.sideTextColor};
 
-    position: absolute;
-    top: 80px;
-    left: 50%;
+  position: absolute;
+  top: 80px;
+  left: 50%;
 
-    transform: translateX(-50%);
+  transform: translateX(-50%);
 
-    @media only screen and (max-width: 768px) {
-        top: 100px;
-        font-size: 40px;
-    }
+  @media only screen and (max-width: 768px) {
+    top: 100px;
+    font-size: 40px;
+  }
 `;
 
 const CoinPriceName = styled.span`
-    font-size: 11px;
+  font-size: 11px;
 
-    padding: 0px 0px 6px 0px;
+  padding: 0px 0px 6px 0px;
 
-    width: 100%;
-    display: block;
+  width: 100%;
+  display: block;
 
-    white-space: pre;
+  white-space: pre;
 
-    text-align: left;
+  text-align: left;
 `;
 
 const PriceStatus = styled.h1`
-    font-size: 35px;
-    font-weight: 700;
+  font-size: 35px;
+  font-weight: 700;
 `;
 
 const PriceDetailGrid = styled.div`
-    width: 100%;
+  width: 100%;
 
-    display: grid;
-    grid-template-rows: repeat(3, 1fr);
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
 `;
 
 const PriceDetailohlv = styled.div`
-    padding: 8px 0px 8px 0px;
+  padding: 8px 0px 8px 0px;
 
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 
-    &:last-child {
-        border: none;
-    }
+  &:last-child {
+    border: none;
+  }
 
-    span {
-        font-size: 11px;
-    }
+  span {
+    font-size: 11px;
+  }
 
-    p {
-        padding: 8px 0px 0px 0px;
-    }
+  p {
+    padding: 8px 0px 0px 0px;
+  }
 `;
 
 const PriceWrapper = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    
-    padding: 0px 0px 6px 0px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-    width: 100%;
+  padding: 0px 0px 6px 0px;
 
-    white-space: pre;
+  width: 100%;
 
-    text-align: left;
+  white-space: pre;
 
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  text-align: left;
+
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 `;
 
 interface PercentProps {
-    isPriceUp: boolean;
+  isPriceUp: boolean;
 }
 
 const MainPriceFlex = styled.div<PercentProps>`
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 
-    color: ${(props) => props.isPriceUp ? props.theme.upColor : props.theme.downColor};
-    transition: color 1s ease;
+  color: ${(props) => (props.isPriceUp ? props.theme.upColor : props.theme.downColor)};
+  transition: color 1s ease;
 `;
 
 const PricePercentFlex = styled.div<PercentProps>`
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 
-    padding: 5px 7px;
+  padding: 5px 7px;
 
-    background-color: ${(props) => props.isPriceUp ? props.theme.upColor : props.theme.downColor};
-    color: ${(props) => props.theme.sideTextColor};
+  background-color: ${(props) => (props.isPriceUp ? props.theme.upColor : props.theme.downColor)};
+  color: ${(props) => props.theme.sideTextColor};
 
-    border-radius: 5px;
+  border-radius: 5px;
 
-    transition: background-color 1s ease;
+  transition: background-color 1s ease;
 `;
 
 const PricePercent = styled.div`
-    font-size: 20px;
-`
+  font-size: 20px;
+`;
 
 const ArrowStatus = styled.span`
-    font-size: 12px;
+  font-size: 12px;
 `;
 
 interface RouteParams {
-    coinId: string;
+  coinId: string;
 }
 
 interface IInfoData {
-    id : string;
-    name : string;
-    symbol : string;
-    rank : number;
-    is_new : boolean;
-    is_active : boolean;
-    type : string;
-    description : string;
-    message : string;
-    open_source : boolean;
-    started_at : string;
-    development_status : string;
-    hardware_wallet : boolean;
-    proof_type : string;
-    org_structure : string;
-    hash_algorithm : string;
-    first_data_at : string;
-    last_data_at : string;
+  id: string;
+  name: string;
+  symbol: string;
+  rank: number;
+  is_new: boolean;
+  is_active: boolean;
+  type: string;
+  description: string;
+  message: string;
+  open_source: boolean;
+  started_at: string;
+  development_status: string;
+  hardware_wallet: boolean;
+  proof_type: string;
+  org_structure: string;
+  hash_algorithm: string;
+  first_data_at: string;
+  last_data_at: string;
 
-    links: {
-        explorer: string;
-        facebook: string;
-        reddit: string;
-        source_code: string;
-        website: string;
-        youtube: string;
+  links: {
+    explorer: string;
+    facebook: string;
+    reddit: string;
+    source_code: string;
+    website: string;
+    youtube: string;
+  };
+
+  tags: [
+    {
+      id: string;
+      name: string;
     }
-
-    tags: [
-        {
-            id: string;
-            name: string;
-        }
-    ]
+  ];
 }
 
 interface IPriceData {
-    id: string;
-    name : string;
-    symbol: string;
-    rank : number;
-    circulating_supply: number;
-    total_supply : number;
-    max_supply: number;
-    beta_value : number;
-    first_data_at: string;
-    last_updated : string;
-    quotes: {
-        USD: {
-            ath_date: string;
-            ath_price: number;
-            market_cap: number;
-            market_cap_change_24h: number;
-            percent_change_1h: number;
-            percent_change_1y: number;
-            percent_change_6h: number;
-            percent_change_7d: number;
-            percent_change_12h: number;
-            percent_change_15m: number;
-            percent_change_24h: number;
-            percent_change_30d: number;
-            percent_change_30m: number;
-            percent_from_price_ath: number;
-            price: number;
-            volume_24h: number;
-            volume_24h_change_24h: number;
-        }
+  id: string;
+  name: string;
+  symbol: string;
+  rank: number;
+  circulating_supply: number;
+  total_supply: number;
+  max_supply: number;
+  beta_value: number;
+  first_data_at: string;
+  last_updated: string;
+  quotes: {
+    USD: {
+      ath_date: string;
+      ath_price: number;
+      market_cap: number;
+      market_cap_change_24h: number;
+      percent_change_1h: number;
+      percent_change_1y: number;
+      percent_change_6h: number;
+      percent_change_7d: number;
+      percent_change_12h: number;
+      percent_change_15m: number;
+      percent_change_24h: number;
+      percent_change_30d: number;
+      percent_change_30m: number;
+      percent_from_price_ath: number;
+      price: number;
+      volume_24h: number;
+      volume_24h_change_24h: number;
     };
+  };
 }
 
 function Coin() {
-    const { coinId } = useParams() as unknown as RouteParams;
+  const { coinId } = useParams() as unknown as RouteParams;
 
-    const { isLoading: dataLoading, data: infoData } = useQuery<IInfoData>(["info", coinId], () => fetchCoinInfo(coinId));
-    const { isLoading: priceLoading, data: priceData } = useQuery<IPriceData>(["price", coinId], () => fetchPrice(coinId),
+  const { isLoading: dataLoading, data: infoData } = useQuery<IInfoData>(["info", coinId], () => fetchCoinInfo(coinId));
+  const { isLoading: priceLoading, data: priceData } = useQuery<IPriceData>(
+    ["price", coinId],
+    () => fetchPrice(coinId),
     {
-        refetchInterval: 5000,
-    });
-    
-    const coinDate = infoData?.first_data_at.slice(0, 10);
+      refetchInterval: 5000,
+    }
+  );
 
-    const isPriceUp = priceData?.quotes.USD.percent_change_24h ? priceData?.quotes.USD.percent_change_24h > 0 : false;
+  const coinDate = infoData?.first_data_at.slice(0, 10);
 
-    const loading = dataLoading || priceLoading;
+  const isPriceUp = priceData?.quotes.USD.percent_change_24h ? priceData?.quotes.USD.percent_change_24h > 0 : false;
 
-    return (
-        <HelmetProvider>
-            <MainWrapper>
-                <Helmet>
-                    <title>{infoData?.id.toUpperCase()}</title>
-                    <link rel="icon" href={`https://cryptoicon-api.vercel.app/api/icon/${infoData?.symbol.toLowerCase()}`} />
-                </Helmet>
-                <HomeBgWrapper>
-                    <HomeImg />
-                    <BackgroundCover />
-                    <CoinDetailTitle>CRYPTO TRACKER</CoinDetailTitle>
-                    <ImgDesWrapper>
-                        {loading ? (
-                            <LoadingPage>
-                                <i className="fas fa-spinner fa-pulse"></i>
-                                <span>Loading ...</span>
-                            </LoadingPage>
-                        ) : (
-                            <CoinDetailGrid>
-                                <CoinInfoBox>
-                                    <CoinSymbolBox>
-                                        <CoinSymbol src={`https://cryptoicon-api.vercel.app/api/icon/${infoData?.symbol.toLowerCase()}`}/>
-                                        <h1 title={infoData?.description! === "" ? "등록된 설명이 없습니다." : infoData?.description}>{infoData?.name}</h1>
-                                        <span>{infoData?.symbol}</span>
-                                    </CoinSymbolBox>
-                                    <CoinRankBox>
-                                        <CoinTypeBoxAccent>Rank #{infoData?.rank}</CoinTypeBoxAccent>
-                                        <CoinTypeBox>{infoData?.type.slice(0, 1).toUpperCase()}{infoData?.type.slice(1)}</CoinTypeBox>
-                                        <CoinTypeBox>{coinDate}</CoinTypeBox>
-                                        {infoData?.open_source ? (
-                                            <OpenSourceLink>
-                                                <a href={infoData?.links.source_code} target="_blank" rel="noreferrer">
-                                                    <i className="fas fa-code" /> Source Code <i className="fas fa-external-link-alt" />
-                                                </a>
-                                            </OpenSourceLink>
-                                        ) : (
-                                            null
-                                        )}
-                                    </CoinRankBox>
-                                    <TagsSpan>Tags:</TagsSpan>
-                                    <CoinTagsBox>
-                                        {infoData?.tags! == null ? (
-                                            <CoinTypeBox>등록된 태그가 없습니다.</CoinTypeBox>
-                                        ) : (
-                                            infoData?.tags!.map((item) => (
-                                                <CoinTypeBox key={item.id}>#{item.name}</CoinTypeBox>
-                                            ))
-                                        )}
-                                    </CoinTagsBox>
-                                </CoinInfoBox>
-                                <CoinInfoBox>
-                                    <CoinPriceName>{infoData?.name} Price ({infoData?.symbol}) - Last Updated: {priceData?.last_updated.slice(0, 10)}</CoinPriceName>
-                                    <PriceWrapper>
-                                        <MainPriceFlex isPriceUp={isPriceUp}>
-                                            <ArrowStatus>{isPriceUp ? "▲ " : "▼ "}</ArrowStatus>
-                                            <PriceStatus>
-                                            ${priceData?.quotes.USD.price.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{" "}
-                                            </PriceStatus>
-                                        </MainPriceFlex>
-                                        <PricePercentFlex isPriceUp={isPriceUp}>
-                                            <ArrowStatus>{isPriceUp ? "▲ " : "▼ "}</ArrowStatus>
-                                            <PricePercent>
-                                                {isPriceUp ? priceData!.quotes.USD.percent_change_24h.toFixed(1).toString() : priceData!.quotes.USD.percent_change_24h.toFixed(1).toString().replace("-", "")}%
-                                            </PricePercent>
-                                        </PricePercentFlex>
-                                    </PriceWrapper>
-                                    <PriceDetailGrid>
-                                        <PriceDetailohlv>
-                                            <span>Market Cap: </span>
-                                            <p>${priceData?.quotes.USD.market_cap.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</p>
-                                        </PriceDetailohlv>
-                                        <PriceDetailohlv>
-                                            <span>All Time High: </span>
-                                            <p>${priceData?.quotes.USD.ath_price.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</p>
-                                        </PriceDetailohlv>
-                                        <PriceDetailohlv>
-                                            <span>All Time Date: </span>
-                                            <p>{priceData?.quotes.USD.ath_date.slice(0, 10)}</p>
-                                        </PriceDetailohlv>
-                                    </PriceDetailGrid>
-                                </CoinInfoBox>
-                                <GraphBox>
-                                    <ChartList coinId={coinId} coinName={infoData!.name}></ChartList>
-                                </GraphBox>
-                            </CoinDetailGrid>
-                        )}
-                    </ImgDesWrapper>
-                </HomeBgWrapper>
-            </MainWrapper>
-        </HelmetProvider>
-    )
+  const loading = dataLoading || priceLoading;
+
+  return (
+    <HelmetProvider>
+      <MainWrapper>
+        <Helmet>
+          <title>{infoData?.id.toUpperCase()}</title>
+          <link rel="icon" href={`https://coinicons-api.vercel.app/api/icon/${infoData?.symbol.toLowerCase()}`} />
+        </Helmet>
+        <HomeBgWrapper>
+          <HomeImg />
+          <BackgroundCover />
+          <CoinDetailTitle>CRYPTO TRACKER</CoinDetailTitle>
+          <ImgDesWrapper>
+            {loading ? (
+              <LoadingPage>
+                <i className="fas fa-spinner fa-pulse"></i>
+                <span>Loading ...</span>
+              </LoadingPage>
+            ) : (
+              <CoinDetailGrid>
+                <CoinInfoBox>
+                  <CoinSymbolBox>
+                    <CoinSymbol src={`https://coinicons-api.vercel.app/api/icon/${infoData?.symbol.toLowerCase()}`} />
+                    <h1 title={infoData?.description! === "" ? "등록된 설명이 없습니다." : infoData?.description}>
+                      {infoData?.name}
+                    </h1>
+                    <span>{infoData?.symbol}</span>
+                  </CoinSymbolBox>
+                  <CoinRankBox>
+                    <CoinTypeBoxAccent>Rank #{infoData?.rank}</CoinTypeBoxAccent>
+                    <CoinTypeBox>
+                      {infoData?.type.slice(0, 1).toUpperCase()}
+                      {infoData?.type.slice(1)}
+                    </CoinTypeBox>
+                    <CoinTypeBox>{coinDate}</CoinTypeBox>
+                    {infoData?.open_source ? (
+                      <OpenSourceLink>
+                        <a href={infoData?.links.source_code} target="_blank" rel="noreferrer">
+                          <i className="fas fa-code" /> Source Code <i className="fas fa-external-link-alt" />
+                        </a>
+                      </OpenSourceLink>
+                    ) : null}
+                  </CoinRankBox>
+                  <TagsSpan>Tags:</TagsSpan>
+                  <CoinTagsBox>
+                    {infoData?.tags! == null ? (
+                      <CoinTypeBox>등록된 태그가 없습니다.</CoinTypeBox>
+                    ) : (
+                      infoData?.tags!.map((item) => <CoinTypeBox key={item.id}>#{item.name}</CoinTypeBox>)
+                    )}
+                  </CoinTagsBox>
+                </CoinInfoBox>
+                <CoinInfoBox>
+                  <CoinPriceName>
+                    {infoData?.name} Price ({infoData?.symbol}) - Last Updated: {priceData?.last_updated.slice(0, 10)}
+                  </CoinPriceName>
+                  <PriceWrapper>
+                    <MainPriceFlex isPriceUp={isPriceUp}>
+                      <ArrowStatus>{isPriceUp ? "▲ " : "▼ "}</ArrowStatus>
+                      <PriceStatus>
+                        $
+                        {priceData?.quotes.USD.price
+                          .toFixed(2)
+                          .toString()
+                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
+                      </PriceStatus>
+                    </MainPriceFlex>
+                    <PricePercentFlex isPriceUp={isPriceUp}>
+                      <ArrowStatus>{isPriceUp ? "▲ " : "▼ "}</ArrowStatus>
+                      <PricePercent>
+                        {isPriceUp
+                          ? priceData!.quotes.USD.percent_change_24h.toFixed(1).toString()
+                          : priceData!.quotes.USD.percent_change_24h.toFixed(1).toString().replace("-", "")}
+                        %
+                      </PricePercent>
+                    </PricePercentFlex>
+                  </PriceWrapper>
+                  <PriceDetailGrid>
+                    <PriceDetailohlv>
+                      <span>Market Cap: </span>
+                      <p>
+                        $
+                        {priceData?.quotes.USD.market_cap
+                          .toFixed(2)
+                          .toString()
+                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                      </p>
+                    </PriceDetailohlv>
+                    <PriceDetailohlv>
+                      <span>All Time High: </span>
+                      <p>
+                        $
+                        {priceData?.quotes.USD.ath_price
+                          .toFixed(2)
+                          .toString()
+                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                      </p>
+                    </PriceDetailohlv>
+                    <PriceDetailohlv>
+                      <span>All Time Date: </span>
+                      <p>{priceData?.quotes.USD.ath_date.slice(0, 10)}</p>
+                    </PriceDetailohlv>
+                  </PriceDetailGrid>
+                </CoinInfoBox>
+                <GraphBox>
+                  <ChartList coinId={coinId} coinName={infoData!.name}></ChartList>
+                </GraphBox>
+              </CoinDetailGrid>
+            )}
+          </ImgDesWrapper>
+        </HomeBgWrapper>
+      </MainWrapper>
+    </HelmetProvider>
+  );
 }
 
 export default Coin;

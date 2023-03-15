@@ -5,173 +5,161 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 
 interface side {
-    toggle: boolean;
+  toggle: boolean;
 }
 
 const WebWrapper = styled.div<side>`
-    width: ${(props) => props.toggle ? "50px" : "100%"};
-    height: ${(props) => props.toggle ? "0px" : "100%"};
+  width: ${(props) => (props.toggle ? "50px" : "100%")};
+  height: ${(props) => (props.toggle ? "0px" : "100%")};
 
-    position: absolute;
+  position: absolute;
 
-    transition: width 0.5s ease,
-                height 0.5s ease;
+  transition: width 0.5s ease, height 0.5s ease;
 
-    z-index: 2;
+  z-index: 2;
 `;
 
 const InnerContainer = styled.div<side>`
-    width: ${(props) => props.toggle ? "50px" : "100%"};
-    height: ${(props) => props.toggle ? "0px" : "100%"};
-    display: flex;
+  width: ${(props) => (props.toggle ? "50px" : "100%")};
+  height: ${(props) => (props.toggle ? "0px" : "100%")};
+  display: flex;
 
-    transition: width 0.5s ease,
-                height 0.5s ease;
+  transition: width 0.5s ease, height 0.5s ease;
 `;
 
 const SideWrapper = styled.div<side>`
-    width: ${(props) => props.toggle ? "0px" : "100%"};
-    height: ${(props) => props.toggle ? "0px" : "100%"};
+  width: ${(props) => (props.toggle ? "0px" : "100%")};
+  height: ${(props) => (props.toggle ? "0px" : "100%")};
 
-    position: relative;
+  position: relative;
 
-    color: ${(props) => props.theme.sideTextColor};
+  color: ${(props) => props.theme.sideTextColor};
 
-    overflow-y: scroll;
+  overflow-y: scroll;
 
-    transition: width 0.5s ease,
-                height 0.5s ease;
+  transition: width 0.5s ease, height 0.5s ease;
 
-    &::before {
-        content: '';
+  &::before {
+    content: "";
 
-        width: ${(props) => props.toggle ? "0px" : "100%"};
-        height: ${(props) => props.toggle ? "0px" : "100%"};
+    width: ${(props) => (props.toggle ? "0px" : "100%")};
+    height: ${(props) => (props.toggle ? "0px" : "100%")};
 
-        background-color: ${(props) => props.theme.sideOpacityAccent};
+    background-color: ${(props) => props.theme.sideOpacityAccent};
 
-        position: fixed;
-        top: 0;
-        left: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
 
-        backdrop-filter: blur(15px);
-        -webkit-backdrop-filter: blur(5px); 
-        -moz-backdrop-filter: blur(5px); 
-        -o-backdrop-filter: blur(5px); 
-        -ms-backdrop-filter: blur(5px); 
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(5px);
+    -moz-backdrop-filter: blur(5px);
+    -o-backdrop-filter: blur(5px);
+    -ms-backdrop-filter: blur(5px);
 
-        z-index: -1;
+    z-index: -1;
 
-        transition: width 0.5s ease,
-                    height 0.5s ease;
+    transition: width 0.5s ease, height 0.5s ease;
 
-        @media only screen and (max-width: 768px) {
-            background-color: rgba(41, 48, 71, 0.9);
-        }
-                    
+    @media only screen and (max-width: 768px) {
+      background-color: rgba(41, 48, 71, 0.9);
     }
+  }
 
-    &::-webkit-scrollbar {
-        display: none;
-    }
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const SideToggleBtn = styled.div<side>`
-    font-size: 25px;
+  font-size: 25px;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    position: absolute;
-    top: 12.5px;
-    left: 30px;
+  position: absolute;
+  top: 12.5px;
+  left: 30px;
 
-    color: ${(props) => props.theme.sideTextColor};
+  color: ${(props) => props.theme.sideTextColor};
 
-    /* border-top-right-radius: ${(props) => props.toggle ? "0px" : "5px"};
-    border-bottom-right-radius: ${(props) => props.toggle ? "0px" : "5px"}; */
+  /* border-top-right-radius: ${(props) => (props.toggle ? "0px" : "5px")};
+    border-bottom-right-radius: ${(props) => (props.toggle ? "0px" : "5px")}; */
 
-    transition: height 0.5s ease,
-                border-radius 2s ease,
-                background-color 0.5s ease,
-                position 0.5s ease,
-                top 0.5s ease,
-                left 0.5s ease,
-                bottom 0.5s ease,
-                right 0.5s ease,
-                color 0.5s ease;
+  transition: height 0.5s ease, border-radius 2s ease, background-color 0.5s ease, position 0.5s ease, top 0.5s ease,
+    left 0.5s ease, bottom 0.5s ease, right 0.5s ease, color 0.5s ease;
 
+  cursor: pointer;
+
+  i {
     cursor: pointer;
-
-    i {
-        cursor: pointer;
-    }
+  }
 `;
 
 const SideMenuList = styled.ul`
-    width: 100%;
+  width: 100%;
 
-    padding: 0px 70px 0px 70px;
+  padding: 0px 70px 0px 70px;
 
-    position: absolute;
-    top: 60px;
+  position: absolute;
+  top: 60px;
 
-    padding-bottom: 10px;
+  padding-bottom: 10px;
 
-    /* background-color: ${(props) => props.theme.sideOpacityAccent}; */
-`
+  /* background-color: ${(props) => props.theme.sideOpacityAccent}; */
+`;
 
 const SideCoinSymbol = styled.img`
+  width: 20px;
+
+  position: absolute;
+  top: 50%;
+  left: 12px;
+
+  transform: translateY(-50%);
+`;
+
+const SideMenuItem = styled.li`
+  font-weight: 700;
+  font-size: 20px;
+
+  i {
     width: 20px;
 
     position: absolute;
     top: 50%;
-    left: 12px;
+    left: 11px;
 
     transform: translateY(-50%);
-`;
+  }
 
-const SideMenuItem = styled.li`
-    font-weight: 700;
-    font-size: 20px;
-    
-    i {
-        width: 20px;
+  a {
+    padding: 15px 39px;
 
-        position: absolute;
-        top: 50%;
-        left: 11px;
+    display: block;
 
-        transform: translateY(-50%);
-    }
+    position: relative;
 
+    white-space: pre;
+
+    text-decoration: none;
+
+    /* background-color: ${(props) => props.theme.sideOpacityAccent}; */
+    color: ${(props) => props.theme.sideTextColor};
+
+    border-radius: 10px;
+
+    transition: color 0.5s ease;
+  }
+
+  &:hover {
     a {
-        padding: 15px 39px;
-
-        display: block;
-
-        position: relative;
-
-        white-space: pre;
-        
-        text-decoration: none;
-
-        /* background-color: ${(props) => props.theme.sideOpacityAccent}; */
-        color: ${(props) => props.theme.sideTextColor};
-
-        border-radius: 10px;
-
-        transition: color 0.5s ease;
+      color: orange;
     }
+  }
 
-    &:hover {
-        a {
-            color: orange;
-        }
-    }
-
-    /* &:nth-child(1):hover {
+  /* &:nth-child(1):hover {
         a {
             border-top-left-radius: 10px;
             border-bottom-left-radius: 10px;
@@ -203,17 +191,16 @@ const SideMenuItem = styled.li`
         }
     } */
 
-    a.active {
-        border-top-left-radius: 10px;
-        border-bottom-left-radius: 10px;
-        background-color: ${(props) => props.theme.sideColor2};
-        color: ${(props) => props.theme.sideTextColor};
+  a.active {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background-color: ${(props) => props.theme.sideColor2};
+    color: ${(props) => props.theme.sideTextColor};
 
-        transition: color 0.5s ease,
-                    background-color 0.5s ease;
-    }
+    transition: color 0.5s ease, background-color 0.5s ease;
+  }
 
-    /* a.active::before {
+  /* a.active::before {
         content: '';
 
         width: 20px;
@@ -249,18 +236,18 @@ const SideMenuItem = styled.li`
         background-color: rgba(41, 48, 71, 0);
     } */
 
-    span {
-        font-size: 5px;
+  span {
+    font-size: 5px;
 
-        padding-left: 5px;
+    padding-left: 5px;
 
-        position: absolute;
-        top: 18px;
+    position: absolute;
+    top: 18px;
 
-        color: #DF3D2E;
-    }
+    color: #df3d2e;
+  }
 
-    /* &:hover {
+  /* &:hover {
         a {
             border-top-left-radius: 10px;
             border-bottom-left-radius: 10px;
@@ -367,109 +354,105 @@ const SideMenuItem = styled.li`
 `; */
 
 const LoadingPage = styled.div<side>`
-    width: 100%;
-    height: 100vh;
+  width: 100%;
+  height: 100vh;
 
-    display: ${(props) => props.toggle? "none" : "flex"};
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  display: ${(props) => (props.toggle ? "none" : "flex")};
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-    color: ${(props) => props.theme.sideTextColor};
-    background-color: ${(props) => props.theme.sideOpacityAccent};
+  color: ${(props) => props.theme.sideTextColor};
+  background-color: ${(props) => props.theme.sideOpacityAccent};
 
-    backdrop-filter: blur(15px);
+  backdrop-filter: blur(15px);
 
-    i {
-        font-size: 100px;
-    }
+  i {
+    font-size: 100px;
+  }
 
-    span {
-        padding-top: 20px;
-    }
+  span {
+    padding-top: 20px;
+  }
 `;
 
 interface ICoinList {
-    id: string;
-    is_active: boolean;
-    is_new: boolean;
-    name: string;
-    rank: number;
-    symbol: string;
-    type: string;
+  id: string;
+  is_active: boolean;
+  is_new: boolean;
+  name: string;
+  rank: number;
+  symbol: string;
+  type: string;
 }
 
 function Coins() {
-    const { isLoading, data } = useQuery<ICoinList[]>("coinlist", fetchCoin);
+  const { isLoading, data } = useQuery<ICoinList[]>("coinlist", fetchCoin);
 
-    const [ isActive, setIsActive ] = useState(true);
-    const [ isClassActive, setIsClassActive ] = useState(-1);
+  const [isActive, setIsActive] = useState(true);
+  const [isClassActive, setIsClassActive] = useState(-1);
 
-    const handleClick = () => {
-        setIsActive(!isActive);
-    }
+  const handleClick = () => {
+    setIsActive(!isActive);
+  };
 
-    const handleActive = (index: number) => {
-        setIsClassActive(index);
-        setIsActive(!isActive);
-    }
-    
-    return (
-        <WebWrapper toggle={isActive}>
-            { isLoading ? (
-                <LoadingPage toggle={isActive}>
-                    <i className="fas fa-spinner fa-pulse"></i>
-                    <span>Loading ...</span>
-                </LoadingPage>
-            ) : (
-                <InnerContainer toggle={isActive}>
-                    <SideWrapper toggle={isActive}>
-                        <SideMenuList>
-                            <SideMenuItem>
-                                <Link to={{
-                                    pathname: `/`,
-                                }}
-                                
-                                key={-1}
+  const handleActive = (index: number) => {
+    setIsClassActive(index);
+    setIsActive(!isActive);
+  };
 
-                                onClick={() => handleActive(-1)}
-                                className={isClassActive === -1 ? "active" : ""}
-                                >
-                                    <i className="fas fa-home"></i>
-                                    HOME
-                                </Link>
-                            </SideMenuItem>
-                            {data?.slice(0, 300).map((coin, index) => (
-                                <SideMenuItem key={coin.id}>
-                                    <Link to={{
-                                        pathname: `/${coin.id}`,
-                                    }}
-                                    
-                                    state={{
-                                        name: coin.name,
-                                    }}
-
-                                    key={index + 1}
-
-                                    onClick={() => handleActive(index)}
-
-                                    className={isClassActive === index ? "active" : ""}
-                                    >
-                                        <SideCoinSymbol src={`https://cryptoicon-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}/>
-                                        {coin.name} 
-                                        <span>{coin.symbol}</span>
-                                    </Link>
-                                </SideMenuItem>
-                            ))}
-                        </SideMenuList>
-                    </SideWrapper>
-                    <SideToggleBtn toggle={isActive} onClick={handleClick}>
-                        <i onClick={handleClick} className={isActive ? "fas fa-bars" : "fas fa-times"}></i>
-                    </SideToggleBtn>
-                </InnerContainer>
-            )}
-        </WebWrapper>
-    )
+  return (
+    <WebWrapper toggle={isActive}>
+      {isLoading ? (
+        <LoadingPage toggle={isActive}>
+          <i className="fas fa-spinner fa-pulse"></i>
+          <span>Loading ...</span>
+        </LoadingPage>
+      ) : (
+        <InnerContainer toggle={isActive}>
+          <SideWrapper toggle={isActive}>
+            <SideMenuList>
+              <SideMenuItem>
+                <Link
+                  to={{
+                    pathname: `/`,
+                  }}
+                  key={-1}
+                  onClick={() => handleActive(-1)}
+                  className={isClassActive === -1 ? "active" : ""}
+                >
+                  <i className="fas fa-home"></i>
+                  HOME
+                </Link>
+              </SideMenuItem>
+              {data?.slice(0, 300).map((coin, index) => (
+                <SideMenuItem key={coin.id}>
+                  <Link
+                    to={{
+                      pathname: `/${coin.id}`,
+                    }}
+                    state={{
+                      name: coin.name,
+                    }}
+                    key={index + 1}
+                    onClick={() => handleActive(index)}
+                    className={isClassActive === index ? "active" : ""}
+                  >
+                    <SideCoinSymbol src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`} />
+                    {coin.name}
+                    <span>{coin.symbol}</span>
+                  </Link>
+                </SideMenuItem>
+              ))}
+            </SideMenuList>
+          </SideWrapper>
+          <SideToggleBtn toggle={isActive} onClick={handleClick}>
+            <i onClick={handleClick} className={isActive ? "fas fa-bars" : "fas fa-times"}></i>
+          </SideToggleBtn>
+        </InnerContainer>
+      )}
+    </WebWrapper>
+  );
 }
 
 export default Coins;
