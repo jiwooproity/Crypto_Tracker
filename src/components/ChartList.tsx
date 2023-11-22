@@ -1,7 +1,6 @@
 import { useQuery } from "react-query";
 import styled from "styled-components";
 import { fetchPriceHistory } from "../config/api";
-import ApexChart from "react-apexcharts";
 
 interface chartProps {
   coinId: string;
@@ -28,9 +27,13 @@ const GraphBoxText = styled.div`
 `;
 
 function ChartList({ coinId, coinName }: chartProps) {
-  const { isLoading, data } = useQuery<IChartProps[]>(["ohlcvData", coinId], () => fetchPriceHistory(coinId), {
-    refetchInterval: 5000,
-  });
+  const { isLoading } = useQuery<IChartProps[]>(
+    ["ohlcvData", coinId],
+    () => fetchPriceHistory(coinId),
+    {
+      refetchInterval: 5000,
+    }
+  );
 
   return (
     <>

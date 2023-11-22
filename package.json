@@ -1,5 +1,5 @@
 {
-  "name": "crypto_tracker",
+  "name": "crypto-tracker",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -57,5 +57,5 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "https://jiwooproity.github.io/Crypto_Tracker"
+  "homepage": "https://jiwooproity.github.io/crypto-tracker"
 }
